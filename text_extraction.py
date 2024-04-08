@@ -34,7 +34,7 @@ def get_text_from_any_pdf(pdf_file):
     return final_text
 
 # Testing with one document
-pdf_file = '/Users/alessandracerutti/ucl-invoice-assistant/data/invoice_scan/invoice_1.pdf'
+pdf_file = '/Users/alessandracerutti/ucl-invoice-assistant/data/invoice_scan/invoice_5.pdf'
 text = get_text_from_any_pdf(pdf_file)
 
 # Printing result in terminal to see if it is correct
@@ -45,3 +45,101 @@ print(text)
 # Adress has only one error (correct would be: "Pl. de la" instead of "Pl. de la B")
 # Total amount is not extracted
 # Date is correctly extracted 
+
+###### 
+# Extraction
+######
+
+import re
+import pandas as pd
+
+# Use regex to find relevant information
+invoice_number_match = re.search(r'Facture (\d+ \d+)', text)
+date_match = re.search(r'(\d{2}\.\d{2}\.\d{4})', text)
+amount_match = re.search(r'Total intermédiaire (\d+\.\d+)', text)
+tax_match = re.search(r'TVA 2.6% net \(Code 23\) de \d+\.\d+ (\d+\.\d+)', text)
+
+# Calculate total amount to pay
+if amount_match and tax_match:
+    amount_to_pay = float(amount_match.group(1)) + float(tax_match.group(1))
+else:
+    amount_to_pay = None
+
+# Prepare data for the DataFrame
+data = {
+    'Invoice Number': [invoice_number_match.group(1) if invoice_number_match else 'N/A'],
+    'Date': [date_match.group(1) if date_match else 'N/A'],
+    'Amount to Pay': [amount_to_pay]
+}
+
+# Create the DataFrame
+df = pd.DataFrame(data)
+
+# Display the DataFrame
+print(df)
+
+# This works great but we want know to see if it works with invoices in different languages
+
+#############################################
+# Different Language Text Extraction
+#############################################
+
+#  'input_string' contains the invoice text
+def extract_invoice_data(input_string):
+    # Define patterns
+    patterns = {
+        'Invoice Number': r'Rechnung\s+([\d ]+)\n|Fattura\s+([\d ]+)\n|Facture\s+([\d ]+)\n',
+        'Customer Number': r"Kundenummer \s+(\d{1,3}(?:'\d{3})*)|Numéro de client\s+(\d{1,3}(?:'\d{3})*)|Numero cliente\s+(\d{1,3}'?\d{3}|\d{5})",
+        'Employee Name': r"Sachbearbeiter\s+(\w+)\n|Collaboratore\s+(\w+)\n|Collaborateur\s+(\w+)\n",
+        'Delivery Note': r"Lieferschein\s*-\s*(\d{3}\s{1}\d{3})|Bollettino di consegna\s*-\s*(\d{3}\s{1}\d{3})\n|Bulletin de Livraison\s*-\s*(\d{3}\s{1}\d{3})",
+        'Delivery Address': r'Lieferadresse \.\s*(.*)|\d+\s+-\s+(.*?,\s+\d{4}.*?)(?=\n)|Adresse de fourniture \.\s*(.*)',
+        'Date': r'(\d{2}\.\d{2}\.\d{4})|(\d{2}/\d{2}/\d{4})',
+        'Subtotal': r'Total intermédiaire\s+(\d+\.\d+)|Totale intermedio (\d+\.\d+)|Zwischensumme\s+(\d+[\.,]?\d*)|Sous-total\s+(\d+[\.,]?\d*)',
+        'Total': r'Total\s+(\d+\.\d+)|Totale\s+(\d+[\.,]?\d*)|Total\s+(\d+[\.,]?\d*)'
+    }
+    
+    # Extract information
+    extracted_data = {}
+    for key, pattern in patterns.items():
+        match = re.search(pattern, input_string, re.IGNORECASE)
+        if match:
+            # Extract the first non-None group
+            extracted_data[key] = next((m for m in match.groups() if m is not None), 'N/A')
+        else:
+            extracted_data[key] = 'N/A'
+    
+    return extracted_data
+extract_invoice_data(text)
+
+
+
+
+# Extract information using regex
+
+# Prepare the DataFrame
+data = {
+    'Invoice Number':  [],
+    'Customer Number': [],
+    'Employee Name': [],
+    'Delivery Note': [],
+    'Delivery Address': [],
+    'Subtotal': [],
+    'Total': []
+}
+
+# Create the DataFrame
+df_orders = pd.DataFrame(data)
+
+# Display the DataFrame
+print(df)
+
+### Function
+def add_data_to_df_orders(data, df=df_orders):        
+    # Add a new row to the DataFrame with the values from the data dictionary
+    df = df.append(data, ignore_index=True)
+    return df
+
+
+## Testing extraction and table 
+## Testing function for extraction
+add_data_to_df_orders(extract_invoice_data(text))
