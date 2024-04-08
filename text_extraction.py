@@ -34,7 +34,8 @@ def get_text_from_any_pdf(pdf_file):
     return final_text
 
 # Testing with one document
-pdf_file = '/Users/alessandracerutti/ucl-invoice-assistant/data/invoice_scan/invoice_5.pdf'
+pdf_file = '/Users/alessandracerutti/ucl-invoice-assistant/data/invoice_scan/invoice_2.pdf'
+
 text = get_text_from_any_pdf(pdf_file)
 
 # Printing result in terminal to see if it is correct
@@ -89,13 +90,13 @@ def extract_invoice_data(input_string):
     # Define patterns
     patterns = {
         'Invoice Number': r'Rechnung\s+([\d ]+)\n|Fattura\s+([\d ]+)\n|Facture\s+([\d ]+)\n',
-        'Customer Number': r"Kundenummer \s+(\d{1,3}(?:'\d{3})*)|Numéro de client\s+(\d{1,3}(?:'\d{3})*)|Numero cliente\s+(\d{1,3}'?\d{3}|\d{5})",
-        'Employee Name': r"Sachbearbeiter\s+(\w+)\n|Collaboratore\s+(\w+)\n|Collaborateur\s+(\w+)\n",
+        'Customer Number': r"Kundennummer\s+(\d{1,3}(?:'\d{3})*)|Numéro de client\s+(\d{1,3}(?:'\d{3})*)|Numero cliente\s+(\d{1,3}'?\d{3}|\d{5})",
+        'Employee Name': r"Sachebearbeiter\s+(\w+)\n|Collaboratore\s+(\w+)\n|Collaborateur\s+(\w+)\n",
         'Delivery Note': r"Lieferschein\s*-\s*(\d{3}\s{1}\d{3})|Bollettino di consegna\s*-\s*(\d{3}\s{1}\d{3})\n|Bulletin de Livraison\s*-\s*(\d{3}\s{1}\d{3})",
-        'Delivery Address': r'Lieferadresse \.\s*(.*)|\d+\s+-\s+(.*?,\s+\d{4}.*?)(?=\n)|Adresse de fourniture \.\s*(.*)',
+        'Delivery Address': r'Lieferadresse \s*(.*?)\n|Adresse de fourniture \s*(.*?)\n|Indirizzo di fornitura:\s*(.*?)\n|\d+\s+-\s+(.*?,\s+\d{4}.*?)(?=\n)',
         'Date': r'(\d{2}\.\d{2}\.\d{4})|(\d{2}/\d{2}/\d{4})',
-        'Subtotal': r'Total intermédiaire\s+(\d+\.\d+)|Totale intermedio (\d+\.\d+)|Zwischensumme\s+(\d+[\.,]?\d*)|Sous-total\s+(\d+[\.,]?\d*)',
-        'Total': r'Total\s+(\d+\.\d+)|Totale\s+(\d+[\.,]?\d*)|Total\s+(\d+[\.,]?\d*)'
+        'Subtotal': r'Total intermédiaire\s+([\d\s]+\.\d{2})|Totale intermedio\s+([\d\s]+\.\d{2})|Zwischentotal\s+([\d\s]+\.\d{2})',
+        'Total': r"Total CHF\s+(\d+\.\d{2})|Totale CHF\s+(\d+\.\d{2})"
     }
     
     # Extract information
@@ -109,12 +110,14 @@ def extract_invoice_data(input_string):
             extracted_data[key] = 'N/A'
     
     return extracted_data
+
+# Test function
 extract_invoice_data(text)
 
 
-
-
-# Extract information using regex
+#############################################
+# Different Language Text Extraction
+#############################################
 
 # Prepare the DataFrame
 data = {
