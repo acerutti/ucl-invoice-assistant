@@ -4,14 +4,18 @@ from pytesseract import image_to_string
 from PIL import Image
 import os
 
-# If `entrypoint` is not defined in app.yaml, App Engine will look for an app
-# called `app` in `main.py`.
+
 app = Flask(__name__)
 
 @app.route('/')
 def text-extractor():
+    # load document
+    loader = GCSDirectoryLoader(project_name="ucl-engineering-invoice", bucket="invoice-scan")
+    documents = loader.load()
     # Convert the PDF file to an image
-    images = convert_from_path('test.pdf')
+    images = []
+    for i in documents:
+        images = convert_from_path(documents[i])
 
     # Extract the text from the image
     text = ""
