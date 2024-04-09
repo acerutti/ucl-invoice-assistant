@@ -9,7 +9,7 @@ import os
 app = Flask(__name__)
 
 @app.route('/')
-def hello():
+def text-extractor():
     # Convert the PDF file to an image
     images = convert_from_path('test.pdf')
 
