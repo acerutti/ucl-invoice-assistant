@@ -34,7 +34,7 @@ def get_text_from_any_pdf(pdf_file):
     return final_text
 
 # Testing with one document
-pdf_file = '/Users/alessandracerutti/ucl-invoice-assistant/data/invoice_scan/invoice_2.pdf'
+pdf_file = '/Users/alessandracerutti/ucl-invoice-assistant/data/invoice_scan/invoice_3_only_first_page.pdf'
 
 text = get_text_from_any_pdf(pdf_file)
 
@@ -119,8 +119,8 @@ extract_invoice_data(text)
 # Different Language Text Extraction
 #############################################
 
-# Prepare the DataFrame
-data = {
+# Prepare the DataFrame outside the function as a global variable
+df_orders = pd.DataFrame({
     'Invoice Number':  [],
     'Customer Number': [],
     'Employee Name': [],
@@ -128,21 +128,18 @@ data = {
     'Delivery Address': [],
     'Subtotal': [],
     'Total': []
-}
+})
 
-# Create the DataFrame
-df_orders = pd.DataFrame(data)
-
-# Display the DataFrame
-print(df)
-
-### Function
-def add_data_to_df_orders(data, df=df_orders):        
+# Function to add data to the DF
+def add_data_to_df(orders_data):
+    global df_orders  # Declare df_orders as global so that you can modify it
     # Add a new row to the DataFrame with the values from the data dictionary
-    df = df.append(data, ignore_index=True)
-    return df
+    new_row = pd.DataFrame(orders_data, index=[0])
+    df_orders = pd.concat([df_orders, new_row], ignore_index=True)
 
+# Testing function for extraction
+# This would be done for each document's extracted data
+extracted_data = extract_invoice_data(text)  # Replace 'text' with your actual document text
+add_data_to_df(extracted_data)
 
-## Testing extraction and table 
-## Testing function for extraction
-add_data_to_df_orders(extract_invoice_data(text))
+print(df_orders)
