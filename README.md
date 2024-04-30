@@ -1,4 +1,4 @@
-# RAG-based Invoice Processing System
+<img width="1644" alt="Screenshot 2024-04-30 at 10 08 33" src="https://github.com/acerutti/ucl-invoice-assistant/assets/73823471/a04a2e6e-f396-4829-b95b-e04a7b5fcbaf"># RAG-based Invoice Processing System
 
 ## Overview
 
@@ -6,7 +6,7 @@ This repository contains the codebase for a Retrieval Augmented Generation (RAG)
 
 ## Project Architecture
 
-Refer to `Figure 1` in the repository for a comprehensive view of the deployed RAG architecture. The project's infrastructure includes:
+The `Figure below` ![architecture](data/images_readme/architecture.png) illustrates the system architecture. The project's infrastructure includes:
 
 - Automated document uploads to Google Cloud Platform (GCP)
 - Text extraction from various document formats using Pytesseract
@@ -17,11 +17,11 @@ Refer to `Figure 1` in the repository for a comprehensive view of the deployed R
 
 ## Business Problem Context
 
-Invoice and payment tracking, while essential, can be labor-intensive and time-consuming. Our project's RAG application aims to reduce the manual workload involved in these processes, as detailed in the `Business Problem Context` section of the report.
+Invoice and payment tracking, while essential, can be labour-intensive and time-consuming. Our project's RAG application aims to reduce the manual workload involved in these processes, as detailed in the report's` Business Problem Context` section.
 
 ## Dataset
 
-The dataset comprises transactional details extracted from the ERP system of the enterprise, encompassing invoice and bank statement data across Italian, German, and French languages. A stringent anonymization process was applied to ensure data integrity and privacy.
+The dataset comprises transactional details extracted from the enterprise's ERP system, encompassing invoice and bank statement data in Italian, German, and French. An anonymization process was applied to ensure data integrity and privacy.
 
 ## Document Ingestion and Data Flow
 
