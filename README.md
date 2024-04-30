@@ -2,13 +2,14 @@
 This repository contains the codebase for a Retrieval Augmented Generation (RAG) application, designed to streamline invoice processing and payment tracking for a small to medium-sized enterprise. The system leverages Large Language Models (LLMs) to enhance the capabilities of accounting departments, allowing for quicker information retrieval and query handling.
 
 ## Project Architecture
-The `Figure below` ![architecture](data/images_readme/architecture.png) illustrates the system architecture:
+The `Figure below` illustrates the system architecture: 
 - Automated document uploads to Google Cloud Platform (GCP)
 - Text extraction from various document formats using Pytesseract
 - Data storage and vector embedding in a PostgreSQL database on GCP
 - Utilization of Vertex AI for embedding creation (refer to `former_architecture` for an alternative approach not pursued due to capacity constraints)
 - Retrieval and processing of relevant document segments through Chroma DB
 - Query response generation with the Mistral-7B-Instruct-v0.1 LLM
+![architecture](data/images_readme/architecture.png)
 
 ## Business Problem Context
 Invoice and payment tracking, while essential, can be labour-intensive and time-consuming. The project's RAG application aims to reduce the manual workload involved in these processes, as detailed in the report's` Business Problem Context` section.
