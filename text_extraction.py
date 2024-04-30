@@ -10,7 +10,8 @@ from pdf2image import convert_from_path
 from pytesseract import image_to_string
 from PIL import Image
 
-# since the invoices and the bank statements are scanned PDF we need to prepare the data so that we can extract the data
+# since the invoices and the bank statements are scanned PDF 
+# we need to prepare the data so that we can extract the data
 
 #convert pdf to image, returns an iterable containing image format of all the pages of the pdf
 def convert_pdf_to_img(pdf_file):
@@ -34,7 +35,7 @@ def get_text_from_any_pdf(pdf_file):
     return final_text
 
 # Testing with one document
-pdf_file = '/Users/alessandracerutti/ucl-invoice-assistant/data/invoice_scan/invoice_3_only_first_page.pdf'
+pdf_file = 'data/invoice_scan/invoice_3_only_first_page.pdf'
 
 text = get_text_from_any_pdf(pdf_file)
 
